@@ -4,3 +4,243 @@
 *:after {
   box-sizing: border-box;
 }
+
+/* ===== Base Mobile-First Styles ===== */
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: white;
+  color: #000;
+  line-height: 1.5;
+}
+
+header {
+  background-color: white;
+  color: black;
+  padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.siteName a {
+  font-size: 2rem;
+  font-weight: bold; 
+  text-decoration: none; 
+  color: inherit;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  align-items: center;
+  background-color: black;
+}
+
+nav ul {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-evenly; 
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  width: 100%;
+}
+
+nav ul li {
+  margin: 0;
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 0.5rem;
+  font-size: 1.2rem;
+  text-align: center;
+  display: block;
+}
+
+.account {
+  font-size: 0.8rem;
+  color: #ddd;
+  margin-top: 0.5rem;
+  align-self: flex-end;
+}
+
+/* Main Content */
+
+main {
+  padding: 1rem;
+}
+
+.intro h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+}
+
+.hero-text {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.hero-text h2 {
+  color: #0077cc;
+  margin-bottom: 0.5rem;
+}
+
+.hero-text ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.hero-text ul li {
+  color: #0077cc;
+  margin: 0.2rem 0;
+  text-align: left;
+}
+
+.hero-text img {
+  margin-top: 0.8rem;
+  width: 120px;
+}
+
+.hero-img {
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Content Grid */
+
+.content {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.upgrades {
+  order: 2;
+}
+
+.reviews {
+  order: 1;
+}
+
+.upgrades h2,
+.reviews h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.grid div {
+  text-align: center;
+}
+
+.grid div div {
+  background-color: #00bcd4;
+  height: 130px;
+  padding: 0.5rem;
+  border: 2px solid black;
+}
+
+.grid img {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  margin-bottom: 0.3rem;
+  display: inline-block;
+}
+
+.grid p {
+  color: #0000ee;
+  text-decoration: underline;
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+/* Reviews */
+
+.reviews ul {
+  list-style-type: disc;
+  padding-left: 1.2rem;
+  font-size: 1.2rem;
+}
+
+.reviews ul li {
+  margin-bottom: 1rem; 
+}
+
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.8rem;
+  background-color: #f1f1f1;
+}
+
+/* ===== Desktop Styles (min-width: 768px) ===== */
+
+@media screen and (min-width: 768px) {
+  body {
+    background: url('/images/site/checkerboard.jpg') repeat;
+    background-size: 300px 300px;
+  }
+
+  #wrapper {
+    width: 80%;
+    margin: 20px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 5px solid #00bcd4;
+  }
+
+  nav ul {
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row; 
+    gap: 2rem;
+    justify-content: space-between;
+  }
+
+  .upgrades {
+    order: 1;
+    flex: 1;
+  }
+
+  .reviews {
+    order: 2;
+    flex: 1;
+  }
+}
