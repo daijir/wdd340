@@ -24,9 +24,6 @@ Util.getNav = async function (req, res, next) {
   return list
 }
 
-module.exports = Util
-
-
 /* **************************************
 * Build the classification view HTML
 * ************************************ */
@@ -59,6 +56,39 @@ Util.buildClassificationGrid = async function(data){
   }
   return grid
 }
+
+/* **************************************
+* Build the detailed view HTML
+* @param {Object} data
+* @returns {string}
+* ************************************ */
+
+
+Util.buildDetailView = async function(data) {
+  if (!data) return "<p>Vehicle information not found.</p>"
+  const price = Number(data.inv_price).toLocaleString("en-US", { style: "currency", currency: "USD" })
+  const miles = data.inv_miles ? Number(data.inv_miles).toLocaleString("en-US") + " miles" : "Mileage not listed"
+  return `
+    <div class="vehicle-detail">
+      <img src="${data.inv_image}" alt="Image of ${data.inv_make} ${data.inv_model}" class="vehicle-image">
+      <div class="vehicle-info">
+        <h2>${data.inv_year} ${data.inv_make} ${data.inv_model}</h2>
+        <h3>Price: <span class="vehicle-price">${price}</span></h3>
+        <h3>Mileage: <span class="vehicle-miles">${miles}</span></h3>
+        <ul class="vehicle-details-list">
+          <li><strong>Make:</strong> ${data.inv_make}</li>
+          <li><strong>Model:</strong> ${data.inv_model}</li>
+          <li><strong>Year:</strong> ${data.inv_year}</li>
+          <li><strong>Color:</strong> ${data.inv_color}</li>
+        </ul>
+        <h3>Description</h3>
+        <p>${data.inv_description}</p>
+      </div>
+    </div>
+  `
+}
+
+module.exports = Util
 
 
 /* ****************************************
