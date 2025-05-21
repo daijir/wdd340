@@ -16,8 +16,9 @@ module.exports = {getClassifications}
 async function getInventoryByClassificationId(classification_id) {
   try {
     const data = await pool.query(
+      // debugging: public.classification => public.classifications
       `SELECT * FROM public.inventory AS i 
-      JOIN public.classification AS c 
+      JOIN public.classifications AS c      
       ON i.classification_id = c.classification_id 
       WHERE i.classification_id = $1`,
       [classification_id]
