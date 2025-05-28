@@ -1,0 +1,24 @@
+<body>
+  <div class="login-container">
+    <h1><%= title %></h1>
+    <% const msgArr = messages('notice'); %>
+    <% if (msgArr && msgArr.length > 0) { %>
+    <div class="flash-message">
+        <%= msgArr.join('<br>') %>
+    </div>
+    <% } %>
+    <form action="/account/login" method="post">
+      <label for="account_email">Email:</label>
+      <input type="email" id="account_email" name="account_email" required>
+      
+      <label for="account_password">Password:</label>
+      <input type="password" id="account_password" name="account_password" required>
+      
+      <button type="submit">LOGIN</button>
+    </form>
+    <div class="signup-link">
+      No account? <a href="/account/register">Sign-up</a>
+    </div>
+  </div>
+</body>
+</html>
