@@ -1,24 +1,111 @@
-<body>
-  <div class="login-container">
-    <h1><%= title %></h1>
-    <% const msgArr = messages('notice'); %>
-    <% if (msgArr && msgArr.length > 0) { %>
-    <div class="flash-message">
-        <%= msgArr.join('<br>') %>
-    </div>
-    <% } %>
-    <form action="/account/login" method="post">
-      <label for="account_email">Email:</label>
-      <input type="email" id="account_email" name="account_email" required>
-      
-      <label for="account_password">Password:</label>
-      <input type="password" id="account_password" name="account_password" required>
-      
-      <button type="submit">LOGIN</button>
-    </form>
-    <div class="signup-link">
-      No account? <a href="/account/register">Sign-up</a>
-    </div>
+<div class="login-container">
+  <h1><%= title %></h1>
+  <% const msgArr = messages('notice'); %>
+  <% if (msgArr && msgArr.length > 0) { %>
+  <div class="flash-message">
+      <%= msgArr.join('<br>') %>
   </div>
-</body>
-</html>
+  <% } %>
+  <% if (errors) { %>
+  <ul class="notice">
+  <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+  <%  }) %>
+  </ul>
+  <% } %>
+  <form id="loginForm" action="/account/login" method="post">
+    <label for="account_email">Email:</label>
+    <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>">
+    
+    <label for="account_password">Password:</label>
+    <!-- <div class="password-requirements">
+      Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter, and 1 special character.
+    </div> -->
+    <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
+    
+    <button type="submit">LOGIN</button>
+  </form>
+  <div class="signup-link">
+    No account? <a href="/account/register">Sign-up</a>
+  </div>
+</div>
+<style>
+  .login-container {
+    background: #2d4250;
+    max-width: 400px;
+    margin: 60px auto;
+    padding: 2em 2em 1.5em 2em;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    color: #fff;
+    text-align: center;
+  }
+
+  .login-container label {
+      display: block;
+      text-align: left;
+      margin-bottom: 0.3em;
+      font-weight: bold;
+      font-size: 1.1em;
+  }
+
+  .login-container input[type="email"],
+  .login-container input[type="password"] {
+      width: 100%;
+      padding: 0.7em;
+      margin-bottom: 1.2em;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      background: #fff;
+      color: #222;
+  }
+
+  .login-container button {
+      width: 60%;
+      padding: 0.6em;
+      background: #e6e6e6;
+      color: #2d4250;
+      border: none;
+      border-radius: 6px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 1em;
+      transition: background 0.2s;
+  }
+
+  .login-container button:hover {
+      background: #d1d1d1;
+  }
+
+  .login-container .signup-link {
+      color: #fff;
+      font-size: 1.1em;
+      margin-top: 1em;
+      display: block;
+  }
+
+  .login-container .signup-link a {
+      color: #b3e0ff;
+      text-decoration: underline;
+      font-weight: bold;
+  }
+
+  .flash-message {
+      background: #ffe0e0;
+      color: #b30000;
+      padding: 0.7em;
+      border-radius: 4px;
+      margin-bottom: 1em;
+      text-align: center;
+  }
+
+  li {
+    font-size: 0.95em;
+    color: #ffb3b3;
+    text-align: left;
+    margin-bottom: 1em;
+    margin-top: -0.5em;
+  }
+</style>

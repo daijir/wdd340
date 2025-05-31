@@ -1,0 +1,108 @@
+<!-- content heading -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- message -->
+ <% if (locals.messages) { %>
+    <div class="flash-messages">
+        <%- messages() %>
+    </div>
+<% } %>
+
+<!-- error -->
+ <% if (errors && errors.length > 0) { %>
+    <ul class="notice error-messages">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+<% } %>
+
+<!-- new classification form -->
+
+<form id="addClassificationForm" action="/inv/add-classification" method="POST">
+    <fieldset>
+        <legend>New Classification Details</legend>
+
+        <div>
+            <label for="classification_name">Classification Name:</label>
+            <input type="text" id="classification_name" name="classification_name" required
+                   pattern="^[a-zA-Z0-9]+$"
+                   title="Name must be alphabetic characters only. No spaces or special characters."
+                   value="<% locals.classification_name %>">
+            <span class="form-hint">Name must be alphabetic characters only. No spaces or special characters.</span>    
+        </div>
+
+        <button type="submit">Add Classification</button>
+    </fieldset>
+</form>
+
+<style>
+    #addClassificationForm {
+        background: #04a7d6;
+        padding: 1.5em 2em;
+        border-radius: 12px;
+        max-width: 400px;
+        margin: 2em auto;
+    }
+
+    #addClassificationForm fieldset {
+        border: 2px solid #b3e0ff;
+        border-radius: 8px;
+        padding: 1em 1.5em 1.5em 1.5em;
+        background: transparent;
+    }
+
+    #addClassificationForm legend {
+        font-size: 1.1em;
+        margin-bottom: 0.5em;
+        font-weight: bold;
+        color: black;
+    }
+
+    #addClassificationForm label {
+        display: block;
+        margin-top: 1em;
+        margin-bottom: 0.2em;
+        font-weight: bold;
+        color: black;
+    }
+
+    #addClassificationForm .form-hint {
+        font-size: 0.98em;
+        color: #e0f7fa;
+        margin-bottom: 0.5em;
+        font-style: italic;
+    }
+
+    #addClassificationForm input[type="text"] {
+        width: 100%;
+        padding: 0.5em;
+        border: none;
+        border-radius: 4px;
+        margin-bottom: 1em;
+        font-size: 1em;
+        color: #222;
+    }
+
+    #addClassificationForm button[type="submit"] {
+        width: 100%;
+        padding: 0.7em;
+        margin-top: 1em;
+        background: #fff;
+        color: black;
+        border: none;
+        border-radius: 20px;
+        font-size: 1.1em;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    #addClassificationForm button[type="submit"]:hover {
+        background: #e0f7fa;
+    }
+</style>

@@ -1,45 +1,109 @@
-<body>
-  <div class="register-container">
-    <h1><%= title %></h1>
-    <% const msgArr = messages('notice'); %>
-    <% if (msgArr && msgArr.length > 0) { %>
-    <div class="flash-message">
-      <%= msgArr.join('<br>') %>
-    </div>
-    <% } %>
-    <% if (errors) { %>
-    <ul class="notice">
-    <% errors.array().forEach(error => { %>
-      <li><%= error.msg %></li>
-    <%  }) %>
-    </ul>
-    <% } %>
-    <form action="/account/register" method="post">
-      <label for="account_firstname">First name</label>
-      <input type="text" id="account_firstname" name="account_firstname" required>
-
-      <label for="account_lastname">Last name</label>
-      <input type="text" id="account_lastname" name="account_lastname" required>
-
-      <label for="account_email">Email address</label>
-      <input type="email" id="account_email" name="account_email" required>
-
-      <label for="account_password">Password</label>
-      <div class="password-requirements">
-        Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter, and 1 special character.
-      </div>
-      <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
-
-      <button type="submit">Register</button>
-    </form>
+<div class="register-container">
+  <h1><%= title %></h1>
+  <% const msgArr = messages('notice'); %>
+  <% if (msgArr && msgArr.length > 0) { %>
+  <div class="flash-message">
+    <%= msgArr.join('<br>') %>
   </div>
-  <style>
-    .password-requirements, li {
-      font-size: 0.95em;
-      color: #ffb3b3;
-      text-align: left;
-      margin-bottom: 1em;
-      margin-top: -0.5em;
-    }
-  </style>
-</body
+  <% } %>
+  <% if (errors) { %>
+  <ul class="notice">
+  <% errors.array().forEach(error => { %>
+    <li><%= error.msg %></li>
+  <%  }) %>
+  </ul>
+  <% } %>
+  
+  <form action="/account/register" method="post">
+    <label for="account_firstname">First name</label>
+    <input type="text" id="account_firstname" name="account_firstname" required value="<%= locals.account_firstname %>">
+
+    <label for="account_lastname">Last name</label>
+    <input type="text" id="account_lastname" name="account_lastname" required value="<%= locals.account_lastname %>">
+
+    <label for="account_email">Email address</label>
+    <input type="email" id="account_email" name="account_email" required value="<%= locals.account_email %>">
+
+    <label for="account_password">Password</label>
+    <div class="password-requirements">
+      Passwords must be at least 12 characters and contain at least 1 number, 1 capital letter, and 1 special character.
+    </div>
+    <input type="password" id="account_password" name="account_password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$" required>
+
+    <button type="submit">Register</button>
+  </form>
+</div>
+<style>
+  .register-container {
+    background: #344954;
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 2em 2em 1.5em 2em;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    color: #fff;
+    text-align: center;
+  }
+
+  .register-container h1 {
+    margin-bottom: 1.2em;
+  }
+
+  .register-container label {
+    display: block;
+    text-align: left;
+    margin-bottom: 0.3em;
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #fff;
+  }
+
+  .register-container input[type="text"],
+  .register-container input[type="email"],
+  .register-container input[type="password"] {
+    width: 100%;
+    padding: 0.7em;
+    margin-bottom: 1.2em;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    background: #fff;
+    color: #222;
+    box-sizing: border-box;
+  }
+
+  .register-container button {
+    width: 60%;
+    padding: 0.6em;
+    background: #2196f3;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 1em;
+    margin-top: 0.5em;
+    transition: background 0.2s;
+  }
+
+  .register-container button:hover {
+    background: #1769aa;
+  }
+
+  .flash-message {
+    background: #ffe0e0;
+    color: #b30000;
+    padding: 0.7em;
+    border-radius: 4px;
+    margin-bottom: 1em;
+    text-align: center;
+  }
+  .password-requirements, li {
+    font-size: 0.95em;
+    color: #ffb3b3;
+    text-align: left;
+    margin-bottom: 1em;
+    margin-top: -0.5em;
+  }
+</style>
