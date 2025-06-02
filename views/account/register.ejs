@@ -1,18 +1,18 @@
 <div class="register-container">
-  <h1><%= title %></h1>
-  <% const msgArr = messages('notice'); %>
-  <% if (msgArr && msgArr.length > 0) { %>
-  <div class="flash-message">
-    <%= msgArr.join('<br>') %>
-  </div>
-  <% } %>
-  <% if (errors) { %>
-  <ul class="notice">
-  <% errors.array().forEach(error => { %>
-    <li><%= error.msg %></li>
-  <%  }) %>
-  </ul>
-  <% } %>
+  <!-- content heading -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- message -->
+ <% if (locals.messages) { %>
+    <div class="flash-messages">
+        <%- messages() %>
+    </div>
+<% } %>
+
   
   <form action="/account/register" method="post">
     <label for="account_firstname">First name</label>

@@ -27,4 +27,15 @@
     <li><a href="/inv/add-inventory">Add New Vehicle</a></li>
 </ul>
 
+<h2>Manage Inventory</h2>
+<p>Select a Classification</p>
+<select id="classificationList" name="classificationList" required>
+  <option value="">Choose a Classification</option>
+  <% classificationSelect.forEach(function(classification) { %>
+  <option value="<%= classification.classification_id %>"><%= classification.classification_name %></option>
+  <% }) %>
+</select>
+<table id="inventoryDisplay"></table>
+<noscript>JavaScript must be enabled to use this page.</noscript>
 
+<script src="../../js/inventory.js"></script>

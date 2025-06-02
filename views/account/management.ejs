@@ -1,0 +1,24 @@
+<!-- content heading -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- message -->
+ <% if (locals.messages) { %>
+    <div class="flash-messages">
+        <%- messages() %>
+    </div>
+<% } %>
+
+<!-- error -->
+ <% if (errors && errors.length > 0) { %>
+    <ul class="notice error-messages">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+<% } %>
+
+<p>You're logged in</p>

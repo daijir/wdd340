@@ -5,6 +5,15 @@ const accountController = require("../controllers/accountController");
 const accountValidate = require('../utilities/account-validation');
 
 /* ****************************************
+*  Deliver account management view
+* *************************************** */
+router.get(
+  "/",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildAccountManagement)
+)
+
+/* ****************************************
 *  Deliver login view
 * *************************************** */
 router.get("/login", utilities.handleErrors(accountController.buildLogin))
@@ -31,10 +40,7 @@ router.post(
   "/login",
   accountValidate.loginRules(),
   accountValidate.checkLoginData,
-  (req, res) => {
-    res.status(200).send('login process')
-  }
-  // utilities.handleErrors(accountController.registerAccount)
+  utilities.handleErrors(accountController.accountLogin)
 )
 
 
