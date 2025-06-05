@@ -29,7 +29,7 @@
       <label for="classification_id">Classification</label>
       <select id="classification_id" name="classification_id" required>
         <option value="">Choose a Classification</option>
-        <% classifications.forEach(function(classification) { %>
+        <% classificationSelect.forEach(function(classification) { %>
         <option value="<%= classification.classification_id %>"><%= classification.classification_name %></option>
         <% }) %>
       </select>
