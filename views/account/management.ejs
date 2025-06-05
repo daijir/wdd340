@@ -21,4 +21,6 @@
     </ul>
 <% } %>
 
-<p>You're logged in</p>
+<% if (account && account.account_type === "Client") { %>
+  <h2>Welcome <%= account.account_firstname %></h2>
+<% } %>

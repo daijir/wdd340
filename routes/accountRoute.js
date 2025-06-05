@@ -43,6 +43,13 @@ router.post(
   utilities.handleErrors(accountController.accountLogin)
 )
 
+/* ****************************************
+*  Process Logout
+* *************************************** */
+router.get(
+  "/logout",
+  utilities.handleErrors(accountController.logout)
+)
 
 
 module.exports = router;

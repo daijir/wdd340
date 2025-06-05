@@ -112,7 +112,14 @@ async function accountLogin(req, res) {
       } else {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
-      return res.redirect("/account/")
+      // added session.loggedin = true when user logged in
+      req.session.loggedin = true
+      res.render("index", {
+        title: "Welcome to CES Motors!",
+        nav,
+        errors: null,
+        name: accountData.account_firstname
+      })
     }
     else {
       req.flash("message notice", "Please check your credentials and try again.")
@@ -128,5 +135,12 @@ async function accountLogin(req, res) {
   }
 }
 
+async function logout(req, res) {
+  req.session.destroy(() => {
+    res.clearCookie('jwt')
+    res.redirect("/")
+  })
+}
 
-module.exports = { buildLogin, buildRegister, buildAccountManagement, registerAccount, accountLogin }
+
+module.exports = { buildLogin, buildRegister, buildAccountManagement, registerAccount, accountLogin, logout }
