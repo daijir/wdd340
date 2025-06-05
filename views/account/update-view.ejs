@@ -1,0 +1,126 @@
+<div class="update-container">
+  <!-- content heading -->
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- message -->
+ <% if (locals.messages) { %>
+    <div class="flash-messages">
+        <%- messages() %>
+    </div>
+<% } %>
+
+<!-- error -->
+ <% if (errors && errors.length > 0) { %>
+    <ul class="notice error-messages">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+<% } %>
+
+<form class="account-form" id="accountUpdateForm" action="/account/update" method="post" novalidate>
+    <fieldset>
+      <legend>Account Update</legend>
+      <input type="hidden" name="account_id" value="<%= typeof account_id !== 'undefined' ? account_id : (account ? account.account_id : '') %>">
+
+      <div class="form-group">
+        <label for="account_firstname">First Name<span aria-hidden="true">*</span></label><br>
+        <input 
+          type="text" 
+          id="account_firstname" 
+          name="account_firstname" 
+          required 
+          value="<%= typeof account_firstname !== 'undefined' ? account_firstname : (account ? account.account_firstname : '') %>"
+          pattern="^[A-Za-z\-]{2,}$"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="account_lastname">Last Name<span aria-hidden="true">*</span></label><br>
+        <input 
+          type="text" 
+          id="account_lastname" 
+          name="account_lastname" 
+          required 
+          value="<%= typeof account_lastname !== 'undefined' ? account_lastname : (account ? account.account_lastname : '') %>"
+          pattern="^[A-Za-z\-]{2,}$"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="account_email">Email<span aria-hidden="true">*</span></label><br>
+        <input 
+          type="email" 
+          id="account_email" 
+          name="account_email" 
+          required 
+          value="<%= typeof account_email !== 'undefined' ? account_email : (account ? account.account_email : '') %>"
+        >
+      </div>
+
+      <div class="form-group">
+        <button type="submit" disabled>Update Account</button>
+      </div>
+    </fieldset>
+  </form>
+
+  <form class="account-form" id="changePasswordForm" action="/account/update-password" method="post" novalidate>
+    <fieldset>
+      <legend>Change Password</legend>
+      <input type="hidden" name="account_id" value="<%= typeof account_id !== 'undefined' ? account_id : (account ? account.account_id : '') %>">
+
+      <div class="form-group">
+        <label for="account_password">New Password<span aria-hidden="true">*</span></label><br>
+        <input 
+          type="password" 
+          id="account_password" 
+          name="account_password" 
+          required
+          pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+          required
+        ><br>
+        <small>
+          Password must be at least 12 characters and contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.
+        </small>
+      </div>
+
+      <div class="form-group">
+        <button type="submit" disabled>Change Password</button>
+      </div>
+    </fieldset>
+  </form>
+</div>
+
+<script src="/js/acc-update.js"></script>
+
+<style>
+  .update-container {
+    background-color: #e3e3e3;
+    border-radius: 5px;
+    padding: 10px;
+  }
+
+  .account-container {
+    max-width: 450px;
+    margin: 10px auto;
+  }
+
+  fieldset {
+    border-radius: 5px;
+    margin: 10px;
+  }
+
+  .form-group {
+    margin-top: 10px;
+  }
+
+  span[aria-hidden="true"] {
+    color: red;
+  }
+
+  
+</style>

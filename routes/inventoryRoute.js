@@ -3,15 +3,16 @@ const router = new express.Router()
 const invController = require("../controllers/invController")
 const utilities = require("../utilities/")
 const inventoryValidate = require("../utilities/inventory-validation")
+const checkAccountType = require('../utilities/checkAccountType')
 
 router.get("/type/:classificationId", utilities.handleErrors(invController.buildByClassificationId))
 router.get("/detail/:invId", utilities.handleErrors(invController.buildByInventoryId))
-router.get("/", utilities.handleErrors(invController.buildManagement));
-router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification));
-router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory))
-router.get("/getInventory/:classification_id", utilities.handleErrors(invController.getInventoryJSON))
-router.get("/edit/:inv_id", utilities.handleErrors(invController.buildEditInventoryView))
-router.get("/delete/:inv_id", utilities.handleErrors(invController.buildDeleteConfirmationView))
+router.get("/", checkAccountType(['Employee', 'Admin']), utilities.handleErrors(invController.buildManagement));
+router.get("/add-classification", checkAccountType(['Employee', 'Admin']), utilities.handleErrors(invController.buildAddClassification));
+router.get("/add-inventory", checkAccountType(['Employee', 'Admin']), utilities.handleErrors(invController.buildAddInventory))
+router.get("/getInventory/:classification_id", checkAccountType(['Employee', 'Admin']), utilities.handleErrors(invController.getInventoryJSON))
+router.get("/edit/:inv_id", checkAccountType(['Employee', 'Admin']), utilities.handleErrors(invController.buildEditInventoryView))
+router.get("/delete/:inv_id", checkAccountType(['Employee', 'Admin']), utilities.handleErrors(invController.buildDeleteConfirmationView))
 
 router.post(
   '/add-classification',

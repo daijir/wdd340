@@ -33,10 +33,16 @@ async function buildRegister(req, res, next) {
 * *************************************** */
 async function buildAccountManagement(req, res, next) {
   let nav = await utilities.getNav()
+  const accountData = req.session.account;
+  if (!accountData) {
+    req.flash("notice", "Account data not found in session. Please log in again.");
+    return res.redirect("/account/login");
+  }
   res.render("account/management", {
     title: "Account Management",
     nav,
-    errors: null
+    errors: null,
+    account: accountData
   })
 }
 
@@ -113,12 +119,14 @@ async function accountLogin(req, res) {
         res.cookie("jwt", accessToken, { httpOnly: true, secure: true, maxAge: 3600 * 1000 })
       }
       // added session.loggedin = true when user logged in
+      // added session.account = accountData
       req.session.loggedin = true
-      res.render("index", {
-        title: "Welcome to CES Motors!",
+      req.session.account = accountData
+      res.render("account/management", {
+        title: "Account Management",
         nav,
         errors: null,
-        name: accountData.account_firstname
+        account: req.session.account
       })
     }
     else {
@@ -142,5 +150,90 @@ async function logout(req, res) {
   })
 }
 
+/* ****************************************
+*  Deliver update view
+* *************************************** */
+async function buildUpdateView(req, res, next) {
+  let nav = await utilities.getNav()
+  const accountData = req.session.account;
+  res.render("account/update-view", {
+    title: "Update Account",
+    nav,
+    errors: null,
+    account: accountData,
+    account_id: accountData.account_id,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email
+  })
+}
 
-module.exports = { buildLogin, buildRegister, buildAccountManagement, registerAccount, accountLogin, logout }
+/* ****************************************
+ *  Process update account process
+ * ************************************ */
+async function updateAccount(req, res) {
+  let nav = await utilities.getNav()
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+  const updateResult = await accountModel.updateAccount(account_id, account_firstname, account_lastname, account_email)
+  if (updateResult) {
+    req.flash("notice", "Account updated successfully.")
+    const accountData = await accountModel.getAccountById(account_id)
+    req.session.account = accountData // セッションも更新
+    res.render("account/management", {
+      title: "Account Management",
+      nav,
+      errors: null,
+      account: accountData
+    })
+  } else {
+    req.flash("notice", "Account update failed.")
+    res.render("account/update-view", {
+      title: "Update Account",
+      nav,
+      errors: null,
+      account_id,
+      account_firstname,
+      account_lastname,
+      account_email,
+      account: req.session.account
+    })
+  }
+}
+
+/* ****************************************
+ *  Process changing password
+ * ************************************ */
+async function updatePassword(req, res) {
+  let nav = await utilities.getNav()
+  const { account_id, account_password } = req.body
+  try {
+    const hashedPassword = await bcrypt.hash(account_password, 10)
+    const updateResult = await accountModel.updatePassword(account_id, hashedPassword)
+    if (updateResult) {
+      req.flash("notice", "Password updated successfully.")
+    } else {
+      req.flash("notice", "Password update failed.")
+    }
+    const accountData = await accountModel.getAccountById(account_id)
+    res.render("account/management", {
+      title: "Account Management",
+      nav,
+      errors: null,
+      account: accountData
+    })
+  } catch (error) {
+    req.flash("notice", "Error updating password.")
+    res.render("account/update-view", {
+      title: "Update Account",
+      nav,
+      errors: [{ msg: "Error updating password." }],
+      account_id,
+      account: req.session.account
+    })
+  }
+}
+
+
+
+
+module.exports = { buildLogin, buildRegister, buildAccountManagement, registerAccount, accountLogin, logout, buildUpdateView, updateAccount, updatePassword }

@@ -18,7 +18,6 @@ const session = require("express-session")
 const pool = require('./database/')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
-const checkAccountType = require('./utilities/checkAccountType')
 
 /* ***********************
  * Middleware
@@ -37,6 +36,7 @@ const checkAccountType = require('./utilities/checkAccountType')
 // set res.locals.loggedin
 app.use((req, res, next) => {
   res.locals.loggedin = req.session.login || false
+  res.locals.account = req.session.account || null
   next()
 })
 
@@ -67,7 +67,7 @@ app.use(static)
 
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
-app.use("/inv", checkAccountType(['Employee', 'Admin']), inventoryRoute)
+app.use("/inv", inventoryRoute)
 app.use("/account", accountRoute)
 
 // File Not Found Route - must be last route in list

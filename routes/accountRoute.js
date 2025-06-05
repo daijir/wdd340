@@ -4,6 +4,7 @@ const utilities = require("../utilities");
 const accountController = require("../controllers/accountController");
 const accountValidate = require('../utilities/account-validation');
 
+
 /* ****************************************
 *  Deliver account management view
 * *************************************** */
@@ -49,6 +50,25 @@ router.post(
 router.get(
   "/logout",
   utilities.handleErrors(accountController.logout)
+)
+
+router.get(
+  "/update/:account_id",
+  utilities.handleErrors(accountController.buildUpdateView)
+)
+
+router.post(
+  "/update",
+  ...accountValidate.updateAccountRules(),
+  accountValidate.checkUpdateAccountData,
+  utilities.handleErrors(accountController.updateAccount)
+)
+
+router.post(
+  "/update-password",
+  ...accountValidate.passwordRules(),
+  accountValidate.checkPasswordData,
+  utilities.handleErrors(accountController.updatePassword)
 )
 
 
