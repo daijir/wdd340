@@ -81,4 +81,20 @@ async function updatePassword(account_id, hashedPassword) {
   }
 }
 
-module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAccountByEmail, getAccountById, updateAccount, updatePassword }
+
+
+/* ***************************
+ * Final Enhancement: Delete account by ID
+ * ************************** */
+async function deleteAccount(account_id) {
+  try {
+    const sql = "DELETE FROM account WHERE account_id = $1";
+    const result = await pool.query(sql, [account_id]);
+    return result.rowCount;
+  } catch (error) {
+    console.error("deleteAccount error: " + error);
+    throw new Error("Error deleting account");
+  }
+}
+
+module.exports = { registerAccount, checkExistingEmail, getAccountByEmail, getAccountByEmail, getAccountById, updateAccount, updatePassword, deleteAccount }

@@ -72,4 +72,18 @@ router.post(
 )
 
 
+/* ****************************************
+*  Final Enhancement: Delete Account Route
+* *************************************** */
+router.get(
+  "/delete/:account_id", 
+  utilities.handleErrors(accountController.buildDeleteConfirmationView)
+)
+
+router.post(
+  "/delete/",
+  utilities.handleErrors(accountController.deleteAccount)
+)
+
+
 module.exports = router;

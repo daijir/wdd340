@@ -233,7 +233,93 @@ async function updatePassword(req, res) {
   }
 }
 
+/* ****************************************
+ * Final Enhancement: Deliver delete confirmation view
+ * *************************************** */
+async function buildDeleteConfirmationView(req, res, next) {
+  const account_id = parseInt(req.params.account_id);
+  let nav = await utilities.getNav();
+  try {
+    const accountData = await accountModel.getAccountById(account_id);
+
+    if (!accountData) {
+      req.flash("notice", "Sorry, that account could not be found.");
+      return res.redirect("account/management"); 
+    }
+
+    res.render("account/delete-confirm", {
+      title: "Confirm Account Deletion",
+      nav,
+      errors: null,
+      account_id: accountData.account_id,
+    });
+  } catch(e) {
+    console.error("Error in buildDeleteConfirmationView:", e);
+    req.flash("notice", "Sorry, an error occurred while fetching account details.");
+    res.redirect("account/management");
+  }
+}
+
+/* ****************************************
+ * Final Enhancement: Process account deletion
+ * *************************************** */
+async function deleteAccount(req, res, next) {
+  const { account_id, account_password } = req.body;
+  let nav = await utilities.getNav();
+
+  try {
+    const accountData = await accountModel.getAccountById(account_id);
+    if (!accountData) {
+      req.flash("notice", "The account you are trying to delete was not found.");
+      return res.redirect("/account/management"); 
+    }
+
+    if (await bcrypt.compare(account_password, accountData.account_password)) {
+      const deleteResult = await accountModel.deleteAccount(account_id);
+      if (deleteResult) {
+        req.flash("notice", `The account was successfully deleted.`);
+
+        if (req.session.account && req.session.account.account_id == account_id) {
+          req.session.destroy(err => {
+            if (err) {
+              console.error("Error destroying session:", err);
+              req.flash("notice", "An error occurred while logging out, but your account has been deleted.");
+            }
+            res.clearCookie("jwt");
+            return res.redirect("/");
+          });
+        } else {
+          return res.redirect("/account/management");
+        }
+      } else {
+        req.flash("notice", "The account could not be deleted. Please try again.");
+        res.render("account/delete-confirm", {
+          title: "Confirm Account Deletion",
+          nav,
+          errors: [{ msg: "Account deletion failed. Please try again." }],
+          account_id: account_id
+        });
+      }
+    } else {
+      req.flash("notice", "Incorrect password.");
+      res.status(401).render("account/delete-confirm", { 
+        title: "Confirm Account Deletion",
+        nav,
+        errors: [{ msg: "Account deletion cannot be completed." }],
+        account_id: account_id
+      });
+    }
+  } catch(e) {
+    console.error("Error in deleteAccount function:", e);
+    req.flash("notice", "A server error prevented the account from being deleted.");
+    res.status(500).render("account/delete-confirm", {
+      title: "Confirm Account Deletion",
+      nav,
+      errors: [{ msg: "Please try again later." }],
+      account_id: account_id,
+    });
+  }
+}
 
 
-
-module.exports = { buildLogin, buildRegister, buildAccountManagement, registerAccount, accountLogin, logout, buildUpdateView, updateAccount, updatePassword }
+module.exports = { buildLogin, buildRegister, buildAccountManagement, registerAccount, accountLogin, logout, buildUpdateView, updateAccount, updatePassword, buildDeleteConfirmationView, deleteAccount }

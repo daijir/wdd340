@@ -1,7 +1,10 @@
 <header id="top-header">
-    <span class="siteName">
-        <a href="/" title="Return to home page">CSE Motors</a>
-    </span>
+    <h1 class="siteName">
+        <a href="/" title="Return to home page">
+            <img src="/images/site/icon.png" alt="CSE Motors Logo">
+            <span>CSE Motors</span>
+        </a>
+    </h1>
     <div id="tools">
          <% if (locals.loggedin && locals.account) { %>
             <a href="/account/"> Welcome <%= locals.account.account_firstname %></a>

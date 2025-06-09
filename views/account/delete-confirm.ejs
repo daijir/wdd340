@@ -1,0 +1,95 @@
+<% if (title) { %>
+<h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<% if (locals.messages) { %>
+    <div class="flash-messages">
+        <%- messages() %>
+    </div>
+<% } %>
+
+<% if (errors && errors.length > 0) { %>
+    <ul class="notice error-messages">
+      <% errors.forEach(err => { %>
+        <li><%= err.msg %></li>
+      <% }) %>
+    </ul>
+<% } %>
+
+<form id="deleteAccountForm" class="account-form" action="/account/delete" method="POST">
+  <fieldset>
+    <legend><em>To delete your account, please confirm by entering your password. This action cannot be undone.</em></legend>
+    
+    <div>
+      <label for="account_password">Password</label>
+      <input type="password" id="account_password" name="account_password" required placeholder="Please enter your passwod">
+    </div>
+    
+    <div>
+      <button type="submit">Delete Account</button>
+      <input type="hidden" name="account_id"
+      <% if(locals.account_id) { %> value="<%= locals.account_id %>"
+      <% } %>>
+    </div>
+  </fieldset>
+</form>
+
+<style>
+.account-form {
+  background: #04a7d6;
+  padding: 1.5em 2em;
+  border-radius: 8px;
+  max-width: 400px;
+  margin: 2em auto;
+}
+
+.account-form fieldset {
+  border: none;
+  padding: 0;
+}
+
+.account-form legend {
+  color: black;
+  font-size: 1em;
+  margin-bottom: 1em;
+  font-style: italic;
+  letter-spacing: 1px;
+}
+
+.account-form label {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 0.2em;
+  font-weight: bold;
+}
+
+.account-form input,
+.account-form select { /* select is not used but kept for consistency with shared form styles */
+  width: 100%;
+  padding: 0.5em;
+  border: none;
+  border-radius: 4px;
+  margin-bottom: 0.5em;
+  font-size: 1em;
+  color: black;
+}
+
+.account-form button {
+  margin-top: 1em;
+  width: 100%;
+  padding: 0.7em;
+  background: #fff;
+  color: black;
+  border: none;
+  border-radius: 20px;
+  font-size: 1.1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.account-form button:hover {
+  background: #e0f7fa;
+}
+</style>
